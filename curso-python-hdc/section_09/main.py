@@ -10,7 +10,7 @@ def selecionar_palavra():
 
 # iniciar o jogo
 def jogar(palavra):
-    palavra_a_completar = '-' * len(palavra)
+    palavra_a_completar = '_' * len(palavra)
     advinhou = False
     letras_utilizadas = []
     palavras_utilizadas = []
@@ -27,6 +27,46 @@ def jogar(palavra):
         tentativa = str(input('Digite uma palavra ou letra para continuar: ')).upper()
 
         print(tentativa)
+
+        # TENTATIVA DE LETRA ÚNICA
+        # verificar se a tentativa é uma única letra
+        if len(tentativa) == 1 and tentativa.isalpha():
+            # verifica se a letra já foi utilizada
+            if tentativa in letras_utilizadas:
+                print(f'Você já utilizou esta letra antes: {tentativa}')
+            elif tentativa not in palavra:
+                print(f'A letra {tentativa} não está na palavra')
+                tentativas -= 1
+                letras_utilizadas.append(tentativa)
+            # quando a letra está na palavra
+            else:
+                print(f'Você acertou! A letra {tentativa} está na palavra')
+                letras_utilizadas.append(tentativa)
+                # transformar a palavra em uma lista
+                palavra_lista = list(palavra_a_completar)
+
+                # verifica onde pode substituir o underline baseado na letra que foi passada
+                indices = [i for i, letra in enumerate(palavra) if letra == tentativa]
+                for indice in indices:
+                    palavra_lista[indice] = tentativa
+
+                palavra_a_completar = ''.join(palavra_lista)
+
+                if '_' not in palavra_a_completar:
+                    advinhou = True
+
+        else:
+            print('Tentativa inválida, tente novamente!')
+
+        # evibir o status do jogo
+        print(exibir_forca(tentativas))
+        print(palavra_a_completar)
+
+    # finaliza o jogo se o usuário advinhou a palavra ou acabaram as tentativas
+    if advinhou:
+        print('Parabéns! Você acertou a palavra')
+    else:
+        print(f'Acabaram as tentativas, a palavra era: {palavra}')
 
 
 # status do jogo
