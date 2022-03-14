@@ -16,7 +16,7 @@ palavras = [
   'Fone',
   'Telefone',
   'Flor',
-  'Câmera',
+  'Caramelo',
   'Suporte',
   'Espada',
   'Machado'
