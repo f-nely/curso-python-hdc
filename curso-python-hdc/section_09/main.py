@@ -26,8 +26,6 @@ def jogar(palavra):
     while not advinhou and tentativas > 0:
         tentativa = str(input('Digite uma palavra ou letra para continuar: ')).upper()
 
-        print(tentativa)
-
         # TENTATIVA DE LETRA ÚNICA
         # verificar se a tentativa é uma única letra
         if len(tentativa) == 1 and tentativa.isalpha():
@@ -55,6 +53,21 @@ def jogar(palavra):
                 if '_' not in palavra_a_completar:
                     advinhou = True
 
+        # TENTATIVA DE PALAVRA COMPLETA
+        # quando o usuário tenta advinhar a palavra toda da forca
+        elif len(tentativa) == len(palavra) and tentativa.isalpha():
+            # palavra já utilizada
+            if tentativa in palavras_utilizadas:
+                print(f'Você já utilizou está palavra {tentativa}')
+            # palavra está errada
+            elif tentativa != palavra:
+                print(f'A palavra {tentativa} está incorreta!')
+                tentativas -= 1
+                palavras_utilizadas.append(tentativa)
+            # acertou a palavra
+            else:
+                advinhou = True
+                palavra_a_completar = palavra
         else:
             print('Tentativa inválida, tente novamente!')
 
@@ -150,6 +163,11 @@ def exibir_forca(tentativas):
 def iniciar():
     palavra = selecionar_palavra()
     jogar(palavra)
+
+    # quando acaba o jogo, verifica se o usuário quer continuar jogando
+    while input('Jogar novamente? [S/N] ').upper() == 'S':
+        palavra = selecionar_palavra()
+        jogar(palavra)
 
 
 iniciar()
